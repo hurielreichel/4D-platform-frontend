@@ -49,7 +49,7 @@ the following libraries may be installed either by pip or conda.
 
 * Pymesh 2.0.3
 
-Conda may properly install PyMesh, but it's not recomended. In https://pymesh.readthedocs.io/en/latest/installation.html you'll find deeper information on how to install PyMesh . The easiest way is probably through docker, as explained below:
+Conda may properly install PyMesh, but it's not recomended. In [PyMesh Website](https://pymesh.readthedocs.io/en/latest/installation.html) you'll find deeper information on how to install PyMesh . The easiest way is probably through docker, as explained below:
 
 * Have the input file to be converted in the same folder as the mesh-to-uv3.py script and navigate to this folder with cd in you computer's terminal.
 
@@ -75,6 +75,5 @@ root@e53224f5136b:~# cd /models
 ```
 
 And finally run the code as explained above.
-```
 
 
