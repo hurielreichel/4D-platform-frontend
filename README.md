@@ -18,7 +18,7 @@ Each implemented tool comes with its own documentation that explains the impleme
 
 * [LAS to UV3](src/las-to-uv3)
 
-* [RGB Geotiff to UV3](src/rbg-from-geotiff)
+* [RGB Geotiff to UV3](src/rgb-from-geotiff)
 
 * [RGB Geotiff with elevation from DEM to UV3](src/rgb-z-uv3)
 
