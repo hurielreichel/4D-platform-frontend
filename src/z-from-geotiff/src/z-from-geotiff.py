@@ -19,7 +19,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from osgeo import gdal
+from osgeo import gdal, osr
 from struct import pack
 
 import argparse
@@ -120,7 +120,29 @@ gdal.UseExceptions()
 
 # GDAL open geotiff file #
 pm_geotiff = gdal.Open( pm_args.input )
-#pm_geotiff = gdal.Open( pm_input ) #in chase of working inside a GUI
+
+# get the existing coordinate system
+old_cs = osr.SpatialReference()
+old_cs.ImportFromWkt(pm_geotiff.GetProjectionRef())
+
+# create the new coordinate system
+wgs84_wkt = """
+GEOGCS["WGS 84",
+    DATUM["WGS_1984",
+        SPHEROID["WGS 84",6378137,298.257223563,
+            AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0,
+        AUTHORITY["EPSG","8901"]],
+    UNIT["degree",0.01745329251994328,
+        AUTHORITY["EPSG","9122"]],
+    AUTHORITY["EPSG","4326"]]"""
+
+new_cs = osr.SpatialReference()
+new_cs.ImportFromWkt(wgs84_wkt)
+
+if (old_cs != new_cs):
+    pm_geotiff = gdal.Warp('', pm_geotiff, dstSRS='EPSG:4326', format='VRT', outputType=gdal.GDT_Int16)
 
 # retrieve raster data #
 pm_band_z = pm_geotiff.GetRasterBand(1)

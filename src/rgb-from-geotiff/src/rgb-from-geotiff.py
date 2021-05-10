@@ -69,7 +69,6 @@ pm_argparse.add_argument( '-o', '--output' , type=str  , help='uv3 output path' 
 pm_argparse.add_argument( '-r', '--red' , type=int, default=1, help='integer refering to the number of the band to replace (or not) the red band, default being 1' )
 pm_argparse.add_argument( '-g', '--green' , type=int, default=2, help='integer refering to the number of the band to replace (or not) the green band, default being 2' )
 pm_argparse.add_argument( '-b', '--blue' , type=int, default=3, help='integer refering to the number of the band to replace (or not) the blue band, default being 3' )
-pm_argparse.add_argument( '-s', '--swiss', type=int, default=0 , help='if set as true (1), this is converting data from the swiss coordinate system CH1093+ (EPSG:2056) to WGS84')
 
 # read argument and parameters #
 pm_args = pm_argparse.parse_args()

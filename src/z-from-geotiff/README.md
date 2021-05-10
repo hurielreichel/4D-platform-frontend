@@ -23,7 +23,7 @@ $python z-from-geotiff -i /home/user/path/to/geotiff.tiff -o /home/user/path/to/
 
 ### Colour palette
 
-There's also the option of changing the colouring palette / colour map. As this code is using matplotlib's palettes, any of its palettes can be used here. For reference, look at https://matplotlib.org/3.3.2/tutorials/colors/colormaps.html
+There's also the option of changing the colouring palette / colour map. As this code is using matplotlib's palettes, any of its palettes can be used here. For reference, look at [matplotlib palettes](https://matplotlib.org/3.3.2/tutorials/colors/colormaps.html).
 
 The default palette is 'inferno', but here's an example with some other famous palettes:
 
