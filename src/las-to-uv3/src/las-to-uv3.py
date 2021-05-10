@@ -244,6 +244,10 @@ def las_to_uv3(input, output, classification, intensity, rgb, palette, swiss):
                 # this can be changed to address your specific values
                 
                 # undefined / reserved / user defined
+                R = 7
+                G = 10
+                B = 12
+
                 if inFile.points[i][0][5] <= 1 or inFile.points[i][0][5] == 8 or inFile.points[i][0][5] == 12 or inFile.points[i][0][5] >= 19:
                     R = 255
                     G = 255
@@ -263,9 +267,9 @@ def las_to_uv3(input, output, classification, intensity, rgb, palette, swiss):
                 
                 # medium vegetation
                 if inFile.points[i][0][5] == 4:
-                        R = 70
-                        G = 199
-                        B = 100
+                    R = 70
+                    G = 199
+                    B = 100
                 
                 # high vegetation
                 if inFile.points[i][0][5] == 5:

@@ -66,7 +66,7 @@ def pm_raster_interpolate( pm_x, pm_y, pm_raster, pm_nodata ):
     # compute interpolated value #
     return pm_dfx * pm_dx + pm_dfy * pm_dy + pm_dfxy * pm_dx * pm_dy + pm_dfc
 
-def pm_rgb_plus_z(pm_input, pm_raster_z, pm_output, pm_raster_r, pm_raster_g, pm_raster_b, pm_x, pm_y, pm_pw, pm_ph, pm_nodata, pm_w, pm_h):
+def pm_rgb_plus_z(pm_input, pm_raster_z, pm_output, pm_raster_r, pm_raster_g, pm_raster_b, pm_x, pm_y, pm_pw, pm_ph, pm_nodata, pm_w, pm_h, pm_z_width, pm_z_height):
 
         # create output stream #
         with open( pm_output, mode='wb' ) as uv3:
@@ -90,7 +90,7 @@ def pm_rgb_plus_z(pm_input, pm_raster_z, pm_output, pm_raster_r, pm_raster_g, pm
                     pm_zx = ( ( pm_rx * 180/math.pi ) - pm_ztif_x ) / pm_ztif_pw
                     pm_zy = ( pm_ztif_y - ( pm_ry * 180/math.pi ) ) / pm_ztif_ph
                
-                    if int( pm_zx ) < 0 or int( pm_zy ) < 0 or int( pm_zx ) + 1 >= pm_w or int( pm_zy ) + 1 >= pm_h:
+                    if int( pm_zx ) < 0 or int( pm_zy ) < 0 or int( pm_zx ) + 1 >= pm_z_width or int( pm_zy ) + 1 >= pm_z_height:
 
                         # compute interpolated height #
                         pm_z = 0.0;
@@ -167,6 +167,8 @@ pm_dem = gdal.Open( pm_args.dem )
 pm_band_z = pm_dem.GetRasterBand(1)
 pm_nodata_z = pm_band_z.SetNoDataValue(0)
 
+pm_gtrans = pm_dem.GetGeoTransform()
+
 pm_ztif_x = pm_gtrans[0] # origin x #
 pm_ztif_y = pm_gtrans[3] # origin y #
 pm_ztif_pw = pm_gtrans[1] # pixel width #
@@ -188,7 +190,7 @@ if pm_nodata_z is not None:
 print( 'Processing files : ' + os.path.basename( pm_args.input ) + ' and ' + os.path.basename( pm_args.dem ) + '...' )
 
 # process file #
-pm_rgb_plus_z(pm_args.input, pm_raster_z, pm_args.output, pm_raster_r, pm_raster_g, pm_raster_b, pm_x, pm_y, pm_pw, pm_ph, pm_nodata, pm_width, pm_height)
+pm_rgb_plus_z(pm_args.input, pm_raster_z, pm_args.output, pm_raster_r, pm_raster_g, pm_raster_b, pm_x, pm_y, pm_pw, pm_ph, pm_nodata, pm_width, pm_height, pm_z_width, pm_z_height)
 
 # exit script #
 sys.exit( 'Done' )

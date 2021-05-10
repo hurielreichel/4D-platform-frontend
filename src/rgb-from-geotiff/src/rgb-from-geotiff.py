@@ -19,6 +19,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from osgeo import gdal
+import osr
 from struct import pack
 
 import argparse
@@ -26,6 +27,10 @@ import math
 import sys
 import os
 import numpy as np
+
+# Borrowed and Adapted from Aaron Schmocker [aaron@duckpond.ch]
+# Source: http://www.swisstopo.admin.ch/internet/swisstopo/en/home/topics/survey/sys/refsys/projections.html (see PDFs under "Documentation")
+# guthub script: https://github.com/hurielreichel/Swisstopo-WGS84-LV03/blob/master/scripts/py/wgs84_ch1903.py
 
 def pm_assign_rgb( pm_input, pm_output, pm_raster_r, pm_raster_g, pm_raster_b, pm_x, pm_y, pm_pw, pm_ph, pm_nodata, pm_w, pm_h): 
     
@@ -44,7 +49,7 @@ def pm_assign_rgb( pm_input, pm_output, pm_raster_r, pm_raster_g, pm_raster_b, p
                        pm_r = 7
                        pm_g = 10
                        pm_b = 12
-                       
+
                    pm_rx = ( ( x * pm_pw ) + pm_x ) * ( math.pi/180 )
                    pm_ry = ( pm_y - ( y * pm_ph ) ) * ( math.pi/180 )
                    pm_buffer = pack( '<dddBBBB', pm_rx, pm_ry, 0, 1, pm_r, pm_g, pm_b )
@@ -64,6 +69,7 @@ pm_argparse.add_argument( '-o', '--output' , type=str  , help='uv3 output path' 
 pm_argparse.add_argument( '-r', '--red' , type=int, default=1, help='integer refering to the number of the band to replace (or not) the red band, default being 1' )
 pm_argparse.add_argument( '-g', '--green' , type=int, default=2, help='integer refering to the number of the band to replace (or not) the green band, default being 2' )
 pm_argparse.add_argument( '-b', '--blue' , type=int, default=3, help='integer refering to the number of the band to replace (or not) the blue band, default being 3' )
+pm_argparse.add_argument( '-s', '--swiss', type=int, default=0 , help='if set as true (1), this is converting data from the swiss coordinate system CH1093+ (EPSG:2056) to WGS84')
 
 # read argument and parameters #
 pm_args = pm_argparse.parse_args()
@@ -73,7 +79,29 @@ gdal.UseExceptions()
 
 # GDAL open geotiff file #
 pm_geotiff = gdal.Open( pm_args.input )
-#pm_geotiff = gdal.Open( pm_input ) #in chase of working inside a GUI
+
+# get the existing coordinate system
+old_cs = osr.SpatialReference()
+old_cs.ImportFromWkt(pm_geotiff.GetProjectionRef())
+
+# create the new coordinate system
+wgs84_wkt = """
+GEOGCS["WGS 84",
+    DATUM["WGS_1984",
+        SPHEROID["WGS 84",6378137,298.257223563,
+            AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0,
+        AUTHORITY["EPSG","8901"]],
+    UNIT["degree",0.01745329251994328,
+        AUTHORITY["EPSG","9122"]],
+    AUTHORITY["EPSG","4326"]]"""
+
+new_cs = osr.SpatialReference()
+new_cs.ImportFromWkt(wgs84_wkt)
+
+if (old_cs != new_cs):
+    pm_geotiff = gdal.Warp('', pm_geotiff, dstSRS='EPSG:4326', format='VRT', outputType=gdal.GDT_Int16)
 
 # retrieve raster data #
 pm_band_r = pm_geotiff.GetRasterBand(pm_args.red)
@@ -95,7 +123,7 @@ pm_x = pm_gtrans[0] # origin x #
 pm_y = pm_gtrans[3] # origin y #
 pm_pw = pm_gtrans[1] # pixel width #
 pm_ph = -pm_gtrans[5] # pixel height #
-
+    
 # format raster pm_raster
 pm_raster_r = pm_band_r.ReadAsArray( 0, 0, pm_width, pm_height )
 pm_raster_g = pm_band_g.ReadAsArray( 0, 0, pm_width, pm_height )
