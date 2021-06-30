@@ -1,9 +1,9 @@
 # tiff-poly-uv3
-Retrieves RGB and Elevation values from two different geotiff and convert them into an uv3 file. It can also be used for plane raster, this way not using elevation values from a second geotiff.
+Retrieves RGB and Elevation values from two different geotiff and convert them into an uv3 polygon file. It can also be used for plane raster, this way not using elevation values from a second geotiff.
 
 ## Overview
 
-This code retrieves both elevation and RGB values from two different geotiff. This is usually the case when one wants to visualise three-dimensional spatial data. One geotiff is usually a Digital Elevation Model (DEM) and the other, imagery with three different spectral bands. The output file (uv3) is addressed to the eratosthene platform. The difference of this tool to the RGB Geotiff with elevation from DEM to UV3](src/rgb-z-uv3) is that it transforms the points (centroid of every pixel) in polygons, giving a smoother appeareance to the final model.
+This code retrieves both elevation and RGB values from two different geotiff. This is usually the case when one wants to visualise three-dimensional spatial data. One geotiff is usually a Digital Elevation Model (DEM) and the other, imagery with three different spectral bands. The output file (uv3) is addressed to the eratosthene platform. The difference of this tool to the RGB Geotiff with elevation from DEM to UV3 toolkit is that it transforms the points (centroid of every pixel) in polygons, giving a smoother appeareance to the final model.
 
 It is recommended (as sometimes needed) that both geotiff cover the same area. They usually don't need to be equaly croped, as interpolation is applied, though this is recomended. The output file resolution is the same of the RGB imagery Geotiff used.
 
@@ -12,7 +12,7 @@ This code should work with multispectral imagery as well, though, as it only wor
 ```
 $ gdal_translate -of GTiff -ot Byte -scale 0 65535 0 255 /home/usr/path/to/input_geotiff.tif /home/usr/path/to/converted_geotiff.tif
 ```
-### rgb-z-uv3
+### tiff-poly-uv3
 
 There are three main arguments in this code. The **input** file is the RGB Geotiff, used as resolution reference as well. The **dem** argument refers to the elevation geotiff, and the **output** refers to the path to the output file. An usage example can be seen below.
 

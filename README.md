@@ -26,6 +26,8 @@ Each implemented tool comes with its own documentation that explains the impleme
 
 * [Mesh to UV3](src/mesh-to-uv3)
 
+* [Polygonised RGB Geotiff to UV3](src/tiff-poly-uv3)
+
 A detailed documentation of specific file formats used by the tools of this suite can be found of the format page.
 
 ## Copyright and License
