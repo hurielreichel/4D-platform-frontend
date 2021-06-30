@@ -1,6 +1,6 @@
 # Overview
 
-This is writing uv3 files out of LiDAR data (.las), so they can be injected into the eratosthene platform. There are many options available on how to manage and visualise your LiDAR datasets. The most basic form is writing RGB values based on given **RGB**, if they're already available. Some LiDAR data could have been coloured already, by some other tool, and therefore, you can use these RGB values to colour the LiDAR file in the eratosthene platform. Another option is to create RGB values based on file's **heights** (Z values), which is this code's default. **Intensity** is also a colouring possibility, which stands for the recorded return strength of the laser beam. This may be tricky, because its values are not scalable sometimes and, therefore, some alterations might be needed in the raw code. A very interesting aspect about intensity is that it augments the model interpretability, this way allowing for a strong differentiation of captured objects. The last option is colouring the UV3 file based on the raw **classification** given to points. This can also be altered for better results.
+This is writing uv3 files out of LiDAR data (.las), so they can be injected into the eratosthene platform, just like the [LAS to UV3](src/las-to-uv3) toolkit, although this is meant to btach process the procedure. This is meant for the occasion which you may have plenty of las files in a folder and wanted to obtain one unique uv3 file to visualise in the platform. This time, in terms of perability, the only difference is that the input argument will be a directory path and not a file one. There are many options available on how to manage and visualise your LiDAR datasets. The most basic form is writing RGB values based on given **RGB**, if they're already available. Some LiDAR data could have been coloured already, by some other tool, and therefore, you can use these RGB values to colour the LiDAR file in the eratosthene platform. Another option is to create RGB values based on file's **heights** (Z values), which is this code's default. **Intensity** is also a colouring possibility, which stands for the recorded return strength of the laser beam. This may be tricky, because its values are not scalable sometimes and, therefore, some alterations might be needed in the raw code. A very interesting aspect about intensity is that it augments the model interpretability, this way allowing for a strong differentiation of captured objects. The last option is colouring the UV3 file based on the raw **classification** given to points. This can also be altered for better results.
 
 ## las-to-uv3
 
@@ -9,7 +9,7 @@ This is writing uv3 files out of LiDAR data (.las), so they can be injected into
 As LiDAR files are usually big, this can be time-demanding, but shouldn't make you run out of memory. For usage, simply open the folder where this code was cloned or downloaded and use the following command. This is writing colours based on elevation and it's the default conversion.
 
 ```
-$ python3 las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 
+$ python3 las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 
 ```
 
 ![Image of the Eratosthene Platform with an injected LiDAR file coloured by elevation](doc/frauenfeld_height.png)
@@ -57,7 +57,7 @@ And here you can see an example of an injection in the platform.
 ![Image of the Eratosthene Platform with an injected LiDAR file coloured by classification](doc/bassenges_class.png)
 
 ```
-$ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -c 1
+$ python las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -c 1
 ```
 
 ### Intensity
@@ -65,7 +65,7 @@ $ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/
 If what you're really wanting to explore is intensity values, this is the argument you should set as 1:
 
 ```
-$ python3 las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -t 1
+$ python3 las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -t 1
 ```
 
 ![Image of the Eratosthene Platform with an injected LiDAR file coloured by classification](doc/bassenges_intensity.png)
@@ -76,7 +76,7 @@ $ python3 las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to
 Finally, if you already have a coloured las file, you might choose this option:
 
 ```
-$ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -r 1
+$ python las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -r 1
 ```
 
 This option hasn't been tested yet. 
@@ -88,9 +88,9 @@ There's also the option of changing the colouring palette / colour map. As this 
 The default palette is 'inferno', but here's an example with some other famous palettes:
 
 ```
-$ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -p viridis
-$ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -p bone
-$ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -t 1 -p Reds
+$ python las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -p viridis
+$ python las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -p bone
+$ python las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -t 1 -p Reds
 ```
 In the picture below you have some LiDAR data coloured by height using different palettes.  
 
@@ -101,7 +101,7 @@ In the picture below you have some LiDAR data coloured by height using different
 The eratosthene platform works only with the WGS84 - Lat/Long (EPSG: 4326) coordinate system. Although, as the Swiss Territorial Data Lab is centred in Switzerland and as the majority of the datasets that will be injected into the platform come from the Swiss coordinate system CH1093+ (EPSG: 2056), there's an argument to be passed to the command line that will automatically convert you LiDAR coordinates to WGS84. This happens also because converting LiDAR coordinates may be quite an effort and too dependent on other platforms and tools. Here, it's as simple as below:
 
 ```
-$ python las-to-uv3.py -i /home/user/path/to/las/file.las -o /home/user/path/to/output.uv3 -s 1
+$ python las-to-uv3.py -i /home/user/path/to/las/ -o /home/user/path/to/output.uv3 -s 1
 ```
 
 Default is zero (False), so pay attention. This can be passed to all colouring options.
@@ -109,7 +109,7 @@ Default is zero (False), so pay attention. This can be passed to all colouring o
 # Copyright and License
 
 las-to-uv3 - Huriel Reichel Nils Hamel Alessandro Cerioni
-Copyright (c) 2020 Republic and Canton of Geneva
+Copyright (c) 2021 Republic and Canton of Geneva
 
 This program is licensed under the terms of the GNU GPLv3. Documentation and illustrations are licensed under the terms of the CC BY-NC-SA.
 
@@ -122,3 +122,5 @@ Packages can be installed either with pip or conda.
 * laspy 1.7.0
 
 * matplotlib 3.3.3
+
+* numpy 1.19.5

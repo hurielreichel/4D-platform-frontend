@@ -156,11 +156,11 @@ def las_to_uv3(input, output, classification, intensity, rgb, palette, swiss):
                 B = col[2] * 255
                 R = R.astype(int)
                 G = G.astype(int)
-                B = B.astype(int)
                
+                B = B.astype(int)
                 # pack and write 
                 pm_buffer = pack( '<dddBBBB', X, Y, Z, 1, R, G, B)
-                uv3.write( pm_buffer )      
+    §            uv3.write( pm_buffer )      
             #print( X, Y, Z, 1, R, G, B ) # in chase you want to print results as the former Octave code
     
     # Colours based on given RGB values
@@ -383,14 +383,13 @@ def las_to_uv3(input, output, classification, intensity, rgb, palette, swiss):
 pm_argparse = argparse.ArgumentParser()
 
 # argument and parameter directive #
-pm_argparse.add_argument( '-i', '--input', type=str  , help='geotiff path'    )
+pm_argparse.add_argument( '-i', '--input', type=str  , help='las file path'    )
 pm_argparse.add_argument( '-o', '--output' , type=str  , help='uv3 output path' )
 pm_argparse.add_argument( '-r', '--rgb', type=int, default = 0, help='whether rgb values are recorded in the las file. Default to False' )
 pm_argparse.add_argument( '-c', '--classification', type=int, default = 0, help='whether colours should refer to point classification. Default to False' )
 pm_argparse.add_argument( '-t', '--intensity', type=int, default=0, help='whether colours should refer to intensity. Default to False' )
 pm_argparse.add_argument( '-p', '--palette', type=str, default='inferno' , help='matplotlib colour palette name')
 pm_argparse.add_argument( '-s', '--swiss', type=int, default=0 , help='if set as true (1), this is converting data from the swiss coordinate system CH1093+ (EPSG:2056) to WGS84')
-
 
 # read argument and parameters #
 pm_args = pm_argparse.parse_args()      
@@ -401,7 +400,7 @@ print( 'Processing file : ' + os.path.basename( pm_args.input ) + '...' )
 tic = time.time()
 
 # process file #
-las_to_uv3( pm_args.input, pm_args.output, pm_args.classification, pm_args.intensity, pm_args.rgb, pm_args.palette, pm_args.swiss )
+las_to_uv3( pm_args.input, pm_args.output, pm_args.classification, pm_args.intensity, pm_args.rgb, pm_args.palette, pm_args.swiss)
 
 toc = time.time()
 
