@@ -126,7 +126,7 @@ def las_to_uv3(input, output, classification, intensity, rgb):
                         for lasfile in las_file_list:
                                 inFile = File(lasfile, mode='r')
 
-                                print(lasfile)
+                                print(os.path.basename( lasfile ))
 
                                 # defining values for the colour pallete
                                 h = (inFile.z + 49.55) - (12.60 * ((inFile.y - 2600000) / 1000000)) - (22.64 * ((inFile.x - 1200000) / 1000000))
@@ -175,7 +175,6 @@ def las_to_uv3(input, output, classification, intensity, rgb):
                                         B = B.astype(int)
                
                                         # pack and write
-                                        print(X, Y, Z, R, G, B)
                                         pm_buffer = pack( '<dddBBBB', X, Y, Z, 1, R, G, B)
                                         uv3.write( pm_buffer )      
                                                  
@@ -190,7 +189,7 @@ def las_to_uv3(input, output, classification, intensity, rgb):
                         for lasfile in las_file_list:
                                 inFile = File(lasfile, mode='r')
 
-                                print(lasfile)
+                                print(os.path.basename( lasfile ))
 
                                 for i in range(len(inFile.points)):
 
@@ -236,7 +235,7 @@ def las_to_uv3(input, output, classification, intensity, rgb):
                         for lasfile in las_file_list:
                                 inFile = File(lasfile, mode='r')
 
-                                print(lasfile)
+                                print(os.path.basename( lasfile ))
 
                                 for i in range(len(inFile.points)):
                 
@@ -381,7 +380,7 @@ def las_to_uv3(input, output, classification, intensity, rgb):
                         for lasfile in las_file_list:
                                 inFile = File(lasfile, mode='r')
 
-                                print(lasfile)
+                                print(os.path.basename( lasfile ))
 
                                 for i in range(len(inFile.points)):
 
